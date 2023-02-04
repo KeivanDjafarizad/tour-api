@@ -1,0 +1,23 @@
+models:
+  Role:
+    uuid: uuid
+    name: string
+
+  Travel:
+    uuid: uuid
+    isPublic: boolean
+    slug: string:255
+    name: string:255
+    description: text
+    numberOfDays: integer
+    moods: json
+    timestamps
+
+  Tours:
+    uuid: uuid
+    name: string:255
+    startingDate: date
+    endingDate: date
+    price: integer
+    relationships:
+      belongsTo: Travel
