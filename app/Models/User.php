@@ -8,9 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- * @mixin IdeHelperUser
- */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuid;
@@ -47,6 +44,19 @@ class User extends Authenticatable
 
     public function roles(  ): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(
+            Role::class,
+            'role_user',
+            'userId',
+            'roleId'
+        );
+    }
+
+    public function hasRole( $role ): bool
+    {
+        if ( is_string( $role ) ) {
+            return $this->roles->contains( 'name', $role );
+        }
+        return false;
     }
 }
