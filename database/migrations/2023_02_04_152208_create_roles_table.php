@@ -16,18 +16,14 @@ class CreateRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
 
         Schema::create('role_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('roleId')
-                ->references('id')
-                ->on('roles');
-            $table->foreignId('userId')
-                ->references('id')
-                ->on('users');
+            $table->foreignId('roleId');
+            $table->foreignId('userId');
         });
     }
 
