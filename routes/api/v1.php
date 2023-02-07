@@ -20,6 +20,15 @@ Route::prefix('auth')->group(function() {
         ->name('auth.register');
 });
 
+Route::middleware('auth:sanctum')->prefix('tours')->group(function() {
+
+});
+
+Route::middleware('auth:sanctum')->prefix('travel')->group(function() {
+    Route::middleware('can:is_admin')->post('/', [App\Http\Controllers\TravelController::class, 'store'])
+        ->name('travel.store');
+});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

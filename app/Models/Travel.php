@@ -34,4 +34,9 @@ class Travel extends Model
         'isPublic' => 'boolean',
         'moods' => 'array',
     ];
+
+    public function getNumberOfNightsAttribute(): int
+    {
+        return $this->numberOfDays - 1;
+    }
 }

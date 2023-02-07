@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Travel;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterUser extends FormRequest
+class CreateTravel extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +26,19 @@ class RegisterUser extends FormRequest
     {
         return [
             'name' => 'required|string:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string:255',
+            'slug' => 'sometimes|string:255',
+            'description' => 'required|string',
+            'isPublic' => 'sometimes|boolean',
+            'numberOfDays' => 'required|integer',
+            'moods' => 'required|array',
         ];
     }
 
     public function failedValidation( Validator $validator )
     {
         $response = response()->json([
-            'message' => 'Unprocessable Entity',
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
         ], 422);
         throw new \Illuminate\Validation\ValidationException($validator, $response);
     }

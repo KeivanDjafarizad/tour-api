@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\User\Roles;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Role;
 
 class RoleFactory extends Factory
@@ -20,28 +20,37 @@ class RoleFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'uuid' => $this->faker->uuid,
-            'name' => $this->faker->randomElement(['admin', 'user']),
+            'name' => $this->faker->randomElement(Roles::getRoles()),
         ];
     }
 
-    public function isAdmin(  )
+    public function isAdmin(  ): RoleFactory
     {
         return $this->state(function (array $attributes) {
             return [
-                'name' => 'admin',
+                'name' => Roles::Admin->value,
             ];
         });
     }
 
-    public function isUser(  )
+    public function isUser(  ): RoleFactory
     {
         return $this->state(function (array $attributes) {
             return [
-                'name' => 'user',
+                'name' => Roles::User->value,
+            ];
+        });
+    }
+
+    public function isEditor(  ): RoleFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => Roles::Editor->value,
             ];
         });
     }
