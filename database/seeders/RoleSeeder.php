@@ -12,9 +12,10 @@ class RoleSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         \App\Models\Role::factory()->isAdmin()->create();
+        \App\Models\Role::factory()->isEditor()->create();
         \App\Models\Role::factory()->isUser()->create();
     }
 }

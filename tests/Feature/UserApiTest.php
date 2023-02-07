@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\User\Roles;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,13 +20,13 @@ class UserApiTest extends TestCase
         $user = User::factory()->create();
         $user->save();
         $user->roles()->attach(
-            Role::where('name', 'user')->firstOrFail()->id
+            Role::where('name', Roles::User->value)->firstOrFail()->id
         );
         $this->user = $user;
         $user = User::factory()->create();
         $user->save();
         $user->roles()->attach(
-            Role::where('name', 'admin')->firstOrFail()->id
+            Role::where('name', Roles::Admin->value)->firstOrFail()->id
         );
         $this->admin = $user;
     }
@@ -37,12 +38,7 @@ class UserApiTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * A basic feature test example.
-     * @test
-     *
-     * @return void
-     */
+    /** @test */
     public function loging_as_registered_user()
     {
         $response = $this->post(route('auth.login'), [
@@ -119,6 +115,16 @@ class UserApiTest extends TestCase
         Sanctum::actingAs($this->admin);
         $response = $this->post(route('auth.register'), $newUserData);
         $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'email',
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'name' => $newUserData['name'],
+            'email' => $newUserData['email'],
+        ]);
     }
 
     /** @test */

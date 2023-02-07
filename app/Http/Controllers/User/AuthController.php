@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     public function __construct(
-        private RegisterNewUser $registerNewUser,
+        private readonly RegisterNewUser $registerNewUser,
     ) { }
 
     public function login( LoginRequest $request ): JsonResponse
@@ -38,6 +38,6 @@ class AuthController extends Controller
     {
         $user = User::fromArray($request->validated());
         $newUser = $this->registerNewUser->handle($user);
-        return response()->json(new UserResource($user), 201);
+        return response()->json(new UserResource($newUser), 201);
     }
 }
