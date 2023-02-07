@@ -5,7 +5,7 @@ namespace App\Http\Requests\Travel;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTravel extends FormRequest
+class UpdateTravel extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,14 @@ class CreateTravel extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string:255',
+            'name' => 'sometimes|string:255',
             'slug' => 'sometimes|string:255|unique:travels,slug',
-            'description' => 'required|string',
+            'description' => 'sometimes|string',
             'isPublic' => 'sometimes|boolean',
-            'numberOfDays' => 'required|integer',
-            'moods' => 'required|array',
+            'numberOfDays' => 'sometimes|integer',
+            'moods' => 'sometimes|array',
         ];
     }
-
     public function failedValidation( Validator $validator )
     {
         $response = response()->json([

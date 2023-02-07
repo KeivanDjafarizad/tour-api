@@ -14,8 +14,8 @@ class Travel
         public readonly string $description,
         public readonly string $slug,
         public readonly bool $isPublic,
-        public readonly NumberOfDays $numberOfDays,
-        public readonly Moods $moodList
+        public readonly int $numberOfDays,
+        public readonly array $moodList
     ) { }
 
     public static function fromArray( array $data ): self
@@ -31,8 +31,8 @@ class Travel
             $data['description'],
             $data['slug'] ?? Str::slug($data['name']),
             $data['isPublic'] ?? false,
-            NumberOfDays::from($data['numberOfDays']),
-            Moods::from($moods)
+            NumberOfDays::from($data['numberOfDays'])->days,
+            Moods::from($moods)->moods
         );
     }
 }

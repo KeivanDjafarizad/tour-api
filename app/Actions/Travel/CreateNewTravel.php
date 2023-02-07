@@ -14,8 +14,8 @@ class CreateNewTravel
             'description' => $travel->description,
             'slug' => $travel->slug,
             'isPublic' => $travel->isPublic,
-            'numberOfDays' => $travel->numberOfDays->days,
-            'moods' => $travel->moodList->moods
+            'numberOfDays' => $travel->numberOfDays,
+            'moods' => $travel->moodList
         ]);
     }
 }

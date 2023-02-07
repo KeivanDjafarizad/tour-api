@@ -3,21 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Travel\CreateNewTravel;
-use App\DTO\Travel\Travel;
-use App\Http\Requests\Travel\CreateTravel;
+use App\Actions\Travel\UpdateTravel;
+use App\DTO\Travel\Travel as TravelDTO;
+use App\DTO\Travel\UpdateTravel as UpdateTravelDTO;
+use App\Http\Requests\Travel\CreateTravel as CreateTravelRequest;
+use App\Http\Requests\Travel\UpdateTravel as UpdateTravelRequest;
 use App\Http\Resources\TravelResource;
-use Illuminate\Http\Request;
+use App\Models\Travel;
 
 class TravelController extends Controller
 {
     public function __construct(
         private readonly CreateNewTravel $createNewTravel,
+        private readonly UpdateTravel $updateTravel
     ) { }
 
-    public function store(CreateTravel $request): \Illuminate\Http\JsonResponse
+    public function store(CreateTravelRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $travelDto = Travel::fromArray($request->validated());
+            $travelDto = TravelDTO::fromArray($request->validated());
         } catch(\Exception $e) {
             return response()->json([
                 'message' => 'Validation failed',
@@ -28,5 +32,21 @@ class TravelController extends Controller
         $travel = $this->createNewTravel->handle($travelDto);
 
         return response()->json(new TravelResource($travel), 201);
+    }
+
+    public function update( Travel $travel, UpdateTravelRequest $request ): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $travelDto = UpdateTravelDTO::fromArray($request->validated());
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->getMessage(),
+            ], 422);
+        }
+
+        $travel = $this->updateTravel->handle($travelDto, $travel);
+
+        return response()->json(new TravelResource($travel), 200);
     }
 }
