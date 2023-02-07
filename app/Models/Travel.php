@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class Travel extends Model
 {
@@ -49,5 +50,10 @@ class Travel extends Model
     public function tours(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Tour::class, 'travelId');
+    }
+
+    public function scopePublic( $query )
+    {
+        return $query->where('isPublic', true);
     }
 }

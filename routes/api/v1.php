@@ -3,16 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 Route::prefix('auth')->group(function() {
     Route::post('login', [App\Http\Controllers\User\AuthController::class, 'login'])
         ->name('auth.login');
@@ -20,16 +10,20 @@ Route::prefix('auth')->group(function() {
         ->name('auth.register');
 });
 
-Route::middleware('auth:sanctum')->prefix('tours')->group(function() {
+//Route::middleware('auth:sanctum')->prefix('tours')->group(function() {
+//
+//});
 
-});
-
-Route::middleware('auth:sanctum')->prefix('travel')->group(function() {
-    Route::middleware('can:is_admin')->post('/', [App\Http\Controllers\TravelController::class, 'store'])
+Route::prefix('travels')->group(function() {
+    Route::get('/', [App\Http\Controllers\TravelController::class, 'index'])
+        ->name('travel.index');
+    Route::get('/{slug}/tours', [App\Http\Controllers\TourController::class, 'tours'])
+        ->name('travel.tours');
+    Route::middleware(['auth:sanctum', 'can:is_admin'])->post('/', [App\Http\Controllers\TravelController::class, 'store'])
         ->name('travel.store');
-    Route::middleware('can:is_editor')->put('/{travel}', [App\Http\Controllers\TravelController::class, 'update'])
+    Route::middleware(['auth:sanctum', 'can:is_editor'])->put('/{travel}', [App\Http\Controllers\TravelController::class, 'update'])
         ->name('travel.update');
-    Route::middleware('can:is_admin')->post('/{travel}/tour', [App\Http\Controllers\TourController::class, 'store'])
+    Route::middleware(['auth:sanctum', 'can:is_admin'])->post('/{travel}/tour', [App\Http\Controllers\TourController::class, 'store'])
         ->name('travel.tour.store');
 });
 

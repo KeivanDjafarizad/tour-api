@@ -8,6 +8,7 @@ use App\DTO\Travel\Travel as TravelDTO;
 use App\DTO\Travel\UpdateTravel as UpdateTravelDTO;
 use App\Http\Requests\Travel\CreateTravel as CreateTravelRequest;
 use App\Http\Requests\Travel\UpdateTravel as UpdateTravelRequest;
+use App\Http\Resources\TravelCollection;
 use App\Http\Resources\TravelResource;
 use App\Models\Travel;
 
@@ -17,6 +18,12 @@ class TravelController extends Controller
         private readonly CreateNewTravel $createNewTravel,
         private readonly UpdateTravel $updateTravel
     ) { }
+
+    public function index(  ): TravelCollection
+    {
+        $travels = Travel::public()->paginate(5);
+        return new TravelCollection( $travels );
+    }
 
     public function store(CreateTravelRequest $request): \Illuminate\Http\JsonResponse
     {
