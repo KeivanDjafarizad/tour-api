@@ -1,0 +1,14 @@
+created:
+    - database/factories/RoleFactory.php
+    - database/factories/TravelFactory.php
+    - database/factories/ToursFactory.php
+    - database/migrations/2023_02_04_152208_create_roles_table.php
+    - database/migrations/2023_02_04_152209_create_travel_table.php
+    - database/migrations/2023_02_04_152210_create_tours_table.php
+    - app/Models/Role.php
+    - app/Models/Travel.php
+    - app/Models/Tours.php
+models:
+    Role: { uuid: uuid, name: string }
+    Travel: { uuid: uuid, isPublic: boolean, slug: 'string:255', name: 'string:255', description: text, numberOfDays: integer, moods: json, timestamps: timestamps }
+    Tours: { uuid: uuid, name: 'string:255', startingDate: date, endingDate: date, price: integer, relationships: { belongsTo: Travel } }

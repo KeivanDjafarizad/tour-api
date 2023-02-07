@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Enums\User\Roles;
 use App\Models\Role;
+use App\Models\Travel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,13 +22,13 @@ class TravelApiTest extends TestCase
         $user = User::factory()->create();
         $user->save();
         $user->roles()->attach(
-            Role::where('name', 'admin')->firstOrFail()->id
+            Role::where('name', Roles::Admin->value)->firstOrFail()->id
         );
         $this->admin = $user;
         $user = User::factory()->create();
         $user->save();
         $user->roles()->attach(
-            Role::where('name', 'editor')->firstOrFail()->id
+            Role::where('name', Roles::Editor->value)->firstOrFail()->id
         );
         $this->editor = $user;
     }
@@ -172,5 +174,54 @@ class TravelApiTest extends TestCase
             $response = $this->post(route('travel.store'), $travel);
             $response->assertStatus(422);
         }
+    }
+
+    /** @test */
+    public function an_editor_should_be_able_to_modify_travel(  )
+    {
+        $travel = Travel::factory()->create([
+            'name' => 'Test',
+            'description' => 'Test description',
+            'numberOfDays' => 20,
+            'moods' => [
+                "nature" => 20,
+                "relax" => 20,
+                "history" => 20,
+                "culture" => 20,
+                "party" => 20
+            ]
+        ]);
+
+        $data = [
+            'name' => 'Test 2',
+            'description' => 'Test description 2',
+            'numberOfDays' => 30,
+            'moods' => [
+                "nature" => 30,
+                "relax" => 30,
+                "history" => 30,
+                "culture" => 30,
+                "party" => 30
+            ]
+        ];
+
+        Sanctum::actingAs($this->editor);
+        $response = $this->put(route('travel.update', $travel->uuid), $data);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'slug',
+            'description',
+            'numberOfDays',
+            'numberOfNights',
+            'moods',
+        ]);
+        $travel->refresh();
+        $this->assertEquals($travel->uuid, $response->json('id'));
+        $this->assertEquals($travel->name, $data['name']);
+        $this->assertEquals($travel->description, $data['description']);
+        $this->assertEquals($travel->numberOfDays, $data['numberOfDays']);
+        $this->assertEquals($travel->moods, $data['moods']);
     }
 }

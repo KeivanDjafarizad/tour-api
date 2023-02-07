@@ -16,6 +16,7 @@ class CreateToursTable extends Migration
         Schema::create('tours', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
+            $table->foreignId('travelId');
             $table->string('name', 255);
             $table->date('startingDate');
             $table->date('endingDate');

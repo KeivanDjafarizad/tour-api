@@ -27,6 +27,10 @@ Route::middleware('auth:sanctum')->prefix('tours')->group(function() {
 Route::middleware('auth:sanctum')->prefix('travel')->group(function() {
     Route::middleware('can:is_admin')->post('/', [App\Http\Controllers\TravelController::class, 'store'])
         ->name('travel.store');
+    Route::middleware('can:is_editor')->put('/{travel}', [App\Http\Controllers\TravelController::class, 'update'])
+        ->name('travel.update');
+    Route::middleware('can:is_admin')->post('/{travel}/tour', [App\Http\Controllers\TourController::class, 'store'])
+        ->name('travel.tour.store');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

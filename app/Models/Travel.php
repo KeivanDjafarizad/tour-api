@@ -10,6 +10,7 @@ class Travel extends Model
 {
     use HasFactory, HasUuid;
 
+    public $table = 'travels';
     /**
      * The attributes that are mass assignable.
      *
@@ -35,8 +36,18 @@ class Travel extends Model
         'moods' => 'array',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
     public function getNumberOfNightsAttribute(): int
     {
         return $this->numberOfDays - 1;
+    }
+
+    public function tours(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Tour::class, 'travelId');
     }
 }
