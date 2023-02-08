@@ -31,7 +31,7 @@ class AuthController extends Controller
         }
         return response()->json([
             'message' => 'Invalid Credentials',
-        ], 401);
+        ], 404);
     }
 
     public function register( RegisterUser $request ): JsonResponse

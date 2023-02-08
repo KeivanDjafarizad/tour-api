@@ -77,13 +77,15 @@ class TravelApiTest extends TestCase
             $response = $this->post(route('travel.store'), $travel);
             $response->assertStatus(201);
             $response->assertJsonStructure([
-                'id',
-                'name',
-                'slug',
-                'description',
-                'numberOfDays',
-                'numberOfNights',
-                'moods',
+                'data' => [
+                    'id',
+                    'name',
+                    'slug',
+                    'description',
+                    'numberOfDays',
+                    'numberOfNights',
+                    'moods',
+                ]
             ]);
         }
     }
@@ -209,16 +211,18 @@ class TravelApiTest extends TestCase
         $response = $this->put(route('travel.update', $travel->uuid), $data);
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'id',
-            'name',
-            'slug',
-            'description',
-            'numberOfDays',
-            'numberOfNights',
-            'moods',
+            'data' => [
+                'id',
+                'name',
+                'slug',
+                'description',
+                'numberOfDays',
+                'numberOfNights',
+                'moods',
+            ]
         ]);
         $travel->refresh();
-        $this->assertEquals($travel->uuid, $response->json('id'));
+        $this->assertEquals($travel->uuid, $response->json('data.id'));
         $this->assertEquals($travel->name, $data['name']);
         $this->assertEquals($travel->description, $data['description']);
         $this->assertEquals($travel->numberOfDays, $data['numberOfDays']);

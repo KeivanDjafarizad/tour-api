@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 
+/**
+ * @mixin IdeHelperTravel
+ */
 class Travel extends Model
 {
     use HasFactory, HasUuid;

@@ -15,11 +15,13 @@ class TourResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->uuid,
-            'name' => $this->name,
-            'startingDate' => $this->startingDate->format('Y-m-d'),
-            'endingDate' => $this->endingDate->format('Y-m-d'),
-            'price' => $this->price,
+            'data' => [
+                'id' => $this->uuid,
+                'name' => $this->name,
+                'startingDate' => $this->startingDate->format('Y-m-d'),
+                'endingDate' => $this->endingDate->format('Y-m-d'),
+                'price' => $this->price,
+            ]
         ];
     }
 }

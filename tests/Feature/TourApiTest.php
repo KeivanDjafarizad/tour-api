@@ -65,17 +65,21 @@ class TourApiTest extends TestCase
         $response = $this->postJson(route('travel.tour.store', $travel->uuid), $tourInfo);
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'id',
-            'name',
-            'startingDate',
-            'endingDate',
-            'price',
+            'data' => [
+                'id',
+                'name',
+                'startingDate',
+                'endingDate',
+                'price',
+            ]
         ]);
         $response->assertJson([
-            'name' => $tourInfo['name'],
-            'startingDate' => $tourInfo['startingDate'],
-            'endingDate' => $tourInfo['endingDate'],
-            'price' => $tourInfo['price'],
+            'data' => [
+                'name' => $tourInfo['name'],
+                'startingDate' => $tourInfo['startingDate'],
+                'endingDate' => $tourInfo['endingDate'],
+                'price' => $tourInfo['price'],
+            ]
         ]);
         self::assertCount(1, $travel->tours);
     }

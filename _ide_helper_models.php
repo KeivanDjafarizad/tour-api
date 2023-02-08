@@ -39,6 +39,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $uuid
+ * @property int $travelId
  * @property string $name
  * @property \Illuminate\Support\Carbon $startingDate
  * @property \Illuminate\Support\Carbon $endingDate
@@ -46,6 +47,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Travel|null $travel
+ * @method static \Database\Factories\TourFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Tour newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tour newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tour query()
@@ -55,6 +57,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tour whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tour wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tour whereStartingDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tour whereTravelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tour whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tour whereUuid($value)
  * @mixin \Eloquent
@@ -76,9 +79,13 @@ namespace App\Models{
  * @property array $moods
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int $number_of_nights
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tour> $tours
+ * @property-read int|null $tours_count
  * @method static \Database\Factories\TravelFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Travel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Travel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Travel public()
  * @method static \Illuminate\Database\Eloquent\Builder|Travel query()
  * @method static \Illuminate\Database\Eloquent\Builder|Travel whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Travel whereDescription($value)

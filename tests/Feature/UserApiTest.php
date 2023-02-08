@@ -69,7 +69,7 @@ class UserApiTest extends TestCase
 
         foreach ($data as $item) {
             $response = $this->post(route('auth.login'), $item);
-            $response->assertStatus(401);
+            $response->assertStatus(404);
             $response->assertJsonStructure([
                 'message',
             ]);
@@ -116,9 +116,11 @@ class UserApiTest extends TestCase
         $response = $this->post(route('auth.register'), $newUserData);
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'id',
-            'name',
-            'email',
+            'data' => [
+                'id',
+                'name',
+                'email',
+            ]
         ]);
 
         $this->assertDatabaseHas('users', [

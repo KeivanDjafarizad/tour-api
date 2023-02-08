@@ -6,6 +6,9 @@ use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @mixin IdeHelperRole
+ */
 class Role extends Model
 {
     use HasFactory, HasUuid;
